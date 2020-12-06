@@ -58,4 +58,49 @@ const createStep = (label, index) => {
   return template;
 };
 
-app.innerHTML = state.labelTexts.map(createStep).join("");
+formElement.innerHTML = state.labelTexts.map(createStep).join("");
+
+const replaceStep = (direction, value) => {
+  const num = direction === "next" ? 1 : -1;
+  const currentStepIndex = state.currentStepIndex;
+  const currentStepElement = formElement.children[currentStepIndex];
+  const label = state.labelTexts[currentStepIndex];
+
+  const prevNextElm = formElement.children[currentStepIndex + num];
+  const prevNextIndex = currentStepIndex + num;
+  const prevNextElmLabel = state.labelTexts[prevNextIndex];
+
+  state.values[currentStepIndex] = value;
+  state.currentStepIndex = currentStepIndex + num;
+
+  currentStepElement.insertAdjacentHTML(
+    "beforebegin",
+    createStep(label, currentStepIndex)
+  );
+  prevNextElm.insertAdjacentHTML(
+    "beforebegin",
+    createStep(prevNextElmLabel, prevNextIndex)
+  );
+  currentStepElement.remove();
+  prevNextElm.remove();
+};
+
+formElement.addEventListener("click", (e) => {
+  const stepType = e.target.dataset.step;
+  const { currentStepIndex, lastIndex } = state;
+  const currentStepElement = formElement.children[currentStepIndex];
+  const inputElement = currentStepElement.querySelector("input");
+  e.preventDefault();
+
+  if (
+    stepType === "next" &&
+    currentStepIndex < lastIndex &&
+    inputElement.value
+  ) {
+    replaceStep("next", inputElement.value);
+  } else if (stepType === "back" && currentStepIndex > 0) {
+    replaceStep("back", inputElement.value);
+  }
+});
+
+app.appendChild(formElement);

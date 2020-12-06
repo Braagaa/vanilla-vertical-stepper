@@ -47,6 +47,7 @@ button {
   border: none;
   margin-top: 0.5em;
   cursor: pointer;
+  color: white;
 }
 
 button:disabled {
