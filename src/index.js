@@ -16,6 +16,7 @@ state.lastIndex = state.labelTexts.length - 1;
 
 const createStep = (label, index) => {
   const { lastIndex, values, currentStepIndex } = state;
+  const value = values[currentStepIndex];
   const labelHTML = `
 		<span class="label-container">
 			<span class="icon">${index + 1}</span>
@@ -30,7 +31,7 @@ const createStep = (label, index) => {
 			<input 
 				class="input" 
 				type="text" 
-				value="${values[currentStepIndex] || ""}"
+				value="${value || ""}"
 			/>
 			<div class="buttons">
 				<button 
@@ -40,7 +41,13 @@ const createStep = (label, index) => {
 				>
 					Back
 				</button>
-				<button data-step="next" class="next">Next</button>
+				<button
+					data-step="next" 
+					class="next"
+					${!value ? "disabled" : ""}
+				>
+					Next
+				</button>
 			</div>
 		</div>
 	`;
@@ -88,7 +95,7 @@ const replaceStep = (direction, value) => {
 formElement.addEventListener("click", (e) => {
   const stepType = e.target.dataset.step;
   const { currentStepIndex, lastIndex } = state;
-  const currentStepElement = formElement.children[currentStepIndex];
+  const currentStepElement = formElement.children[state.currentStepIndex];
   const inputElement = currentStepElement.querySelector("input");
   e.preventDefault();
 
@@ -101,6 +108,10 @@ formElement.addEventListener("click", (e) => {
   } else if (stepType === "back" && currentStepIndex > 0) {
     replaceStep("back", inputElement.value);
   }
+});
+
+formElement.addEventListener("input", (e) => {
+  e.preventDefault();
 });
 
 app.appendChild(formElement);
