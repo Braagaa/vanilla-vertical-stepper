@@ -18,6 +18,23 @@ export default class Step {
     }
   }
 
+  validateStep() {
+    const [input, buttons] = this.formChildren;
+    if (input.value) {
+      buttons.children[1].disabled = false;
+    } else {
+      buttons.children[1].disabled = true;
+    }
+  }
+
+  toggleCompleted() {
+    if (this.iconElement.textContent !== "\u2713") {
+      this.iconElement.textContent = "\u2713";
+    } else {
+      this.iconElement.textContent = this.index + 1;
+    }
+  }
+
   createForm() {
     const form = createElement("form", `form ${!this.next ? "no-border" : ""}`);
     return form;
@@ -38,12 +55,13 @@ export default class Step {
     back.disabled = !this.prev;
     back.dataset.step = "back";
     const next = createElement("button", "next", "Next");
-    next.disabled = !this.next;
+    next.disabled = true;
     next.dataset.step = "next";
     addChildren(buttons, back, next);
     addChildren(form, input, buttons);
     addChildren(step, labelContainer, form);
 
+    this.iconElement = icon;
     this.formElement = form;
     this.formChildren = [input, buttons];
 

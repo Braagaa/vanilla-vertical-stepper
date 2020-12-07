@@ -16,14 +16,18 @@ const steps = new Steps(labelTexts);
 steps.createStepElements().forEach((elm) => formElement.appendChild(elm));
 
 formElement.addEventListener("click", (e) => {
-	e.preventDefault();
-	const stepType = e.target.dataset.step;
+  e.preventDefault();
+  const stepType = e.target.dataset.step;
 
-	if (stepType === "next") { 
-		steps.next();
-	} else if (stepType === "back") { 
-		steps.prev();
-	}
+  if (stepType === "next") {
+    steps.next();
+  } else if (stepType === "back") {
+    steps.prev();
+  }
+});
+
+formElement.addEventListener("input", (e) => {
+  steps.current.validateStep();
 });
 
 app.appendChild(formElement);

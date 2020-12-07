@@ -73,6 +73,9 @@ button:disabled {
   background-color: var(--main-color);
   color: white;
 }
-.next:hover { 
-	background-color: darkviolet;
+.next:hover {
+  background-color: darkviolet;
+}
+.next:disabled {
+  opacity: 0.2;
 }

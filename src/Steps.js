@@ -35,6 +35,7 @@ export default class Steps {
   next() {
     if (this.current.next) {
       this.current.toggleDisplay();
+      this.current.toggleCompleted();
       this.current.next.toggleDisplay();
       this.current = this.current.next;
     }
@@ -44,6 +45,7 @@ export default class Steps {
     if (this.current.prev) {
       this.current.toggleDisplay();
       this.current.prev.toggleDisplay();
+      this.current.prev.toggleCompleted();
       this.current = this.current.prev;
     }
   }
