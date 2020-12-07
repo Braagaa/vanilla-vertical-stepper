@@ -25,7 +25,7 @@ export default class Steps {
     while (step) {
       elms.push(step.createStep());
       if (this.current !== step) {
-        step.toggleDisplay();
+        step.closedState();
       }
       step = step.next;
     }
@@ -33,19 +33,22 @@ export default class Steps {
   }
 
   next() {
-    if (this.current.next && this.current.validateStep()) {
-      this.current.toggleDisplay();
-      this.current.toggleCompleted();
-      this.current.next.toggleDisplay();
-      this.current = this.current.next;
+    if (this.current.validateStep()) {
+      if (this.current.next) {
+        this.current.completedState();
+        this.current.next.openState();
+        this.current = this.current.next;
+      } else {
+        this.current.completedState();
+        this.current = null;
+      }
     }
   }
 
   prev() {
     if (this.current.prev) {
-      this.current.toggleDisplay();
-      this.current.prev.toggleDisplay();
-      this.current.prev.toggleCompleted();
+      this.current.closedState();
+      this.current.prev.openState();
       this.current = this.current.prev;
     }
   }

@@ -11,13 +11,31 @@ export default class Step {
     this.index = index;
   }
 
-  toggleDisplay() {
+  openState() {
+    const [icon, label] = this.labelChildren;
     if (this.formElement.children.length === 0) {
       addChildren(this.formElement, ...this.formChildren);
       this.formElement.children[0].focus();
-    } else {
-      removeChildren(this.formElement);
     }
+    icon.textContent = this.index + 1;
+    icon.classList.remove("icon-incomplete");
+    label.classList.remove("label-incomplete");
+  }
+
+  closedState() {
+    const [icon, label] = this.labelChildren;
+    removeChildren(this.formElement);
+    icon.textContent = this.index + 1;
+    icon.classList.add("icon-incomplete");
+    label.classList.add("label-incomplete");
+  }
+
+  completedState() {
+    const [icon, label] = this.labelChildren;
+    removeChildren(this.formElement);
+    icon.textContent = "\u2713";
+    icon.classList.remove("icon-incomplete");
+    label.classList.remove("label-incomplete");
   }
 
   validateStep() {
@@ -34,20 +52,6 @@ export default class Step {
     }
   }
 
-  toggleCompleted() {
-    const [icon, label] = this.labelChildren;
-    const [nextIcon, nextLabel] = this.next.labelChildren;
-    if (icon.textContent !== "\u2713") {
-      icon.textContent = "\u2713";
-      nextIcon.classList.toggle("icon-incomplete");
-      nextLabel.classList.toggle("label-incomplete");
-    } else {
-      icon.textContent = this.index + 1;
-      nextIcon.classList.toggle("icon-incomplete");
-      nextLabel.classList.toggle("label-incomplete");
-    }
-  }
-
   createForm() {
     const form = createElement("form", `form ${!this.next ? "no-border" : ""}`);
     return form;
@@ -57,16 +61,8 @@ export default class Step {
     const step = createElement("div", "step");
 
     const labelContainer = createElement("span", "label-container");
-    const icon = createElement(
-      "span",
-      `icon ${this.prev ? "icon-incomplete" : ""}`,
-      this.index + 1
-    );
-    const label = createElement(
-      "span",
-      `label ${this.prev ? "label-incomplete" : ""}`,
-      this.value
-    );
+    const icon = createElement("span", "icon", this.index + 1);
+    const label = createElement("span", "label", this.value);
     addChildren(labelContainer, icon, label);
 
     const form = this.createForm();
@@ -77,7 +73,7 @@ export default class Step {
     back.dataset.step = "back";
     const next = createElement("button", "next", this.next ? "Next" : "Finish");
     next.disabled = true;
-    next.dataset.step = this.next ? "next" : "finish";
+    next.dataset.step = "next";
     addChildren(buttons, back, next);
     addChildren(form, input, buttons);
     addChildren(step, labelContainer, form);
