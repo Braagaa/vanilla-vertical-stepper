@@ -6,4 +6,6 @@ A basic replication of Material-UI's [vertical stepper](https://material-ui.com/
 
 ## How to run it?
 
-This runs with parcel with the command _npm start__.
+This runs with parcel with the command _npm start_.
+
+![](./display.png)
