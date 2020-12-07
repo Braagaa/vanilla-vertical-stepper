@@ -16,6 +16,10 @@ body {
   font-weight: bold;
 }
 
+.label-incomplete {
+  color: lightgrey;
+}
+
 .icon {
   width: 25px;
   height: 25px;
@@ -26,6 +30,10 @@ body {
   font-size: 13px;
   justify-content: center;
   align-items: center;
+}
+
+.icon-incomplete {
+  background-color: lightgrey;
 }
 
 .form {

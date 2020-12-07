@@ -33,7 +33,7 @@ export default class Steps {
   }
 
   next() {
-    if (this.current.next) {
+    if (this.current.next && this.current.validateStep()) {
       this.current.toggleDisplay();
       this.current.toggleCompleted();
       this.current.next.toggleDisplay();

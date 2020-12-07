@@ -27,7 +27,13 @@ formElement.addEventListener("click", (e) => {
 });
 
 formElement.addEventListener("input", (e) => {
-  steps.current.validateStep();
+  steps.current.acceptStep();
+});
+
+formElement.addEventListener("keypress", (e) => {
+  if (e.keyCode === 13) {
+    steps.next();
+  }
 });
 
 app.appendChild(formElement);
