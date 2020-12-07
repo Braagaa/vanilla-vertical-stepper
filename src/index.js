@@ -13,6 +13,17 @@ const labelTexts = [
 
 const steps = new Steps(labelTexts);
 
-steps.createStepElements().forEach(elm => formElement.appendChild(elm));
+steps.createStepElements().forEach((elm) => formElement.appendChild(elm));
+
+formElement.addEventListener("click", (e) => {
+	e.preventDefault();
+	const stepType = e.target.dataset.step;
+
+	if (stepType === "next") { 
+		steps.next();
+	} else if (stepType === "back") { 
+		steps.prev();
+	}
+});
 
 app.appendChild(formElement);

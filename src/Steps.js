@@ -31,4 +31,20 @@ export default class Steps {
     }
     return elms;
   }
+
+  next() {
+    if (this.current.next) {
+      this.current.toggleDisplay();
+      this.current.next.toggleDisplay();
+      this.current = this.current.next;
+    }
+  }
+
+  prev() {
+    if (this.current.prev) {
+      this.current.toggleDisplay();
+      this.current.prev.toggleDisplay();
+      this.current = this.current.prev;
+    }
+  }
 }

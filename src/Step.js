@@ -1,17 +1,4 @@
-const createElement = (tag, classes = "", text, props = {}) => {
-  const elm = document.createElement(tag);
-  classes
-    .trim()
-    .split(" ")
-    .forEach((cl) => elm.classList.add(cl));
-  if (text !== undefined) elm.textContent = text;
-  Object.entries(([key, value]) => (elm[prop] = value));
-  return elm;
-};
-
-const addChildren = (parentElm, ...children) => {
-  children.forEach((child) => parentElm.appendChild(child));
-};
+import { createElement, addChildren, removeChildren } from "./domHelpers";
 
 export default class Step {
   constructor(value, index) {
@@ -19,16 +6,20 @@ export default class Step {
     this.next = null;
     this.prev = null;
     this.formElement = null;
+    this.formChildren = null;
     this.index = index;
   }
 
   toggleDisplay() {
-    this.formElement.replaceWith(this.createForm());
+    if (this.formElement.children.length === 0) {
+      addChildren(this.formElement, ...this.formChildren);
+    } else {
+      removeChildren(this.formElement);
+    }
   }
 
   createForm() {
     const form = createElement("form", `form ${!this.next ? "no-border" : ""}`);
-    this.formElement = form;
     return form;
   }
 
@@ -52,6 +43,9 @@ export default class Step {
     addChildren(buttons, back, next);
     addChildren(form, input, buttons);
     addChildren(step, labelContainer, form);
+
+    this.formElement = form;
+    this.formChildren = [input, buttons];
 
     return step;
   }
